@@ -1,0 +1,10 @@
+{
+  "name": "dcwwApp",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.12"
+  },
+  "resolutions": {
+    "angular": "~1.2.17"
+  }
+}
