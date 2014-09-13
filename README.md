@@ -11,6 +11,7 @@ DC Web Women Code(Her) Ionic Framework Sample App
   - enter command `cordova plugin add org.apache.cordova.statusbar`
   - enter command `cordova plugin add org.apache.cordova.console`
   - enter command `cordova plugin add org.apache.cordova.device`
+  - enter command `cordova plugin add com.ionic.keyboard`
 - Add in the platforms 
   - enter command `ionic platform android`
   - enter command `ionic platform ios`
