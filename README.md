@@ -3,6 +3,7 @@ DC Web Women Code(Her) Ionic Framework Sample App
 
 - Install Ionic [http://ionicframework.com/getting-started/](http://ionicframework.com/getting-started/)
   - this process will download phonegap/cordova for you
+  - ngCordova is used, but already included in repo, more information here: [http://ngcordova.com/docs/](http://ngcordova.com/docs/)
   - we will be using angularjs, that is bunded with ionic, see more information on [AngularJS](https://angularjs.org/)
 - Download Code from repo
 - Add missing bower and node modules
