@@ -3,7 +3,7 @@
   Each tab's child <ion-nav-view> directive will have its own 
   navigation history that also transitions its views in and out.
 -->
-<ion-tabs class="tabs-icon-top">
+<ion-tabs ng-class="{'tabs-icon-top':true, 'tabs-positive':true, 'tabs-top':isAndroid}">
 
   <!-- Friends Tab -->
   <ion-tab title="Image Feed" icon="icon ion-camera" href="#/tab/list">

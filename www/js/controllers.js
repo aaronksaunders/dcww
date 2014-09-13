@@ -2,6 +2,7 @@ angular.module('starter.controllers', [])
 
 
     .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup) {
+
         $scope.imageList = ImageService.all();
 
         // delete the selected row from table
@@ -21,6 +22,7 @@ angular.module('starter.controllers', [])
                 destinationType: Camera.DestinationType.DATA_URL,
                 sourceType: Camera.PictureSourceType.CAMERA,
                 allowEdit: true,
+                correctOrientation: true,
                 encodingType: Camera.EncodingType.JPEG,
                 targetWidth: ImageService.imageSettings().dimensions,
                 targetHeight: ImageService.imageSettings().dimensions,
@@ -61,7 +63,7 @@ angular.module('starter.controllers', [])
 
     .controller('ListDetailCtrl', function ($scope, $stateParams, ImageService) {
         $scope.imageItem = ImageService.get($stateParams.itemId);
-        console.log(JSON.stringify($scope.imageItem));
+        //console.log(JSON.stringify($scope.imageItem));
     })
 
     .controller('AccountCtrl', function ($scope, ImageService) {
@@ -87,6 +89,13 @@ angular.module('starter.controllers', [])
          * save the settings to local storage
          */
         $scope.doSaveSettings = function () {
+            // force the values to be saved as numbers
+            $scope.imageSettings.dimensions = Number($scope.imageSettings.dimensions);
+            $scope.imageSettings.quality = Number($scope.imageSettings.quality);
+
+            // call service to save data
             ImageService.saveImageSettings($scope.imageSettings);
+
+            alert("Settings Saved!");
         }
     });
