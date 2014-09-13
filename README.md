@@ -8,6 +8,9 @@ DC Web Women Code(Her) Ionic Framework Sample App
   - enter command `sudo npm update -g ionic`
 - Add back the plugins that are not included in repo
   - enter command `cordova plugin add org.apache.cordova.camera`
+  - enter command `cordova plugin add org.apache.cordova.statusbar`
+  - enter command `cordova plugin add org.apache.cordova.console`
+  - enter command `cordova plugin add org.apache.cordova.device`
 - Add in the platforms 
   - enter command `ionic platform android`
   - enter command `ionic platform ios`
