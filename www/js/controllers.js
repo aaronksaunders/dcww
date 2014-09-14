@@ -1,14 +1,21 @@
 angular.module('starter.controllers', [])
 
 
-    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup) {
+    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, ParseImageService) {
 
-        $scope.imageList = ImageService.all();
+        ParseImageService.all().then(function (_data) {
+            $scope.imageList = _data;
+            $scope.$apply();
+            console.log(JSON.stringify(_data[0].id));
+        });
 
         // delete the selected row from table
         $scope.doDeleteRow = function (_index) {
-            ImageService.delete({
-                index: _index
+            ParseImageService.delete(_index).then(function () {
+                return  ParseImageService.all().then(function (_data) {
+                    $scope.imageList = _data;
+                    $scope.$apply();
+                });
             });
         };
 
@@ -49,10 +56,16 @@ angular.module('starter.controllers', [])
             }).then(function (_resultParams) {
 
                 // You have the caption now
-                ImageService.save(_resultParams);
+                return ParseImageService.save(_resultParams);
 
-                $scope.imageList = ImageService.all();
-                //$scope.$apply();
+            }).then(function () {
+
+                console.log("update list");
+
+                return  ParseImageService.all().then(function (_data) {
+                    $scope.imageList = _data;
+                    $scope.$apply();
+                });
 
             }, function (err) {
                 // An error occured. Show a message to the user
@@ -61,8 +74,12 @@ angular.module('starter.controllers', [])
         }
     })
 
-    .controller('ListDetailCtrl', function ($scope, $stateParams, ImageService) {
-        $scope.imageItem = ImageService.get($stateParams.itemId);
+    .controller('ListDetailCtrl', function ($scope, $stateParams, ParseImageService) {
+        ParseImageService.get($stateParams.itemId).then(function (_data) {
+            $scope.imageItem = _data;
+            console.log(JSON.stringify(_data.get('picture')._url));
+            $scope.$apply();
+        });
         //console.log(JSON.stringify($scope.imageItem));
     })
 
