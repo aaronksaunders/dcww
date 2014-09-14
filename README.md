@@ -37,15 +37,14 @@ DC Web Women Code(Her) Ionic Framework Sample App
   - enter command `ionic platform ios`
 
 ##Parse Integration as Requested in the workshop
- The application demonstrates the use of Angular Services for persistence. There is a Parse implementation, `ParseImageService` and
- a memory based implementation, `ImageService`. The application currently is configured to use `ParseImageService`; this
- requires that you set your own parse credentials in the application.
+The application demonstrates the use of Angular Services for persistence. There is a Parse implementation, `ParseImageService` and a memory based implementation, `ImageService`. The application currently is configured to use `ParseImageService`; this
+requires that you set your own parse credentials in the application.
  
- You will need to create an application in Parse.com and create a Custom Object with a field `picture` that is of type `File` and another
- field `caption` of type `String`.
+You will need to create an application in Parse.com and create a Custom Object with a field `picture` that is of type `File` and another field `caption` of type `String`.
  
- When you browse your data, it should look like this.
- 
+When you browse your data, it should look like this.
+
+![alt tag](doc/Screenshot 2014-09-14 18.34.33.png)
  
 For additional information, see the Parse.com website for [Getting Started](https://www.parse.com/apps/quickstart#parse_data/web/existing)
  
