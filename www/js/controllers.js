@@ -1,12 +1,22 @@
 angular.module('starter.controllers', [])
 
 
-    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, ParseImageService) {
+    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, ParseImageService,ParseConfiguration) {
+
+        // if not using parse then assign the image service to the default
+        // service
+        if (ParseConfiguration.USING_PARSE === false) {
+            ParseImageService = ImageService;
+            console.log("ParseConfiguration: " + ParseConfiguration.USING_PARSE);
+        }
 
         ParseImageService.all().then(function (_data) {
             $scope.imageList = _data;
-            $scope.$apply();
+           // $scope.$apply();
             console.log(JSON.stringify(_data[0].id));
+        }, function(_error){
+            console.error(JSON.stringify(_error));
+            alert(_error.message)
         });
 
         // delete the selected row from table
@@ -14,8 +24,10 @@ angular.module('starter.controllers', [])
             ParseImageService.delete(_index).then(function () {
                 return  ParseImageService.all().then(function (_data) {
                     $scope.imageList = _data;
-                    $scope.$apply();
+                    //$scope.$apply();
                 });
+            }, function(_error){
+                console.error(_error.message);
             });
         };
 
@@ -64,7 +76,7 @@ angular.module('starter.controllers', [])
 
                 return  ParseImageService.all().then(function (_data) {
                     $scope.imageList = _data;
-                    $scope.$apply();
+                   // $scope.$apply();
                 });
 
             }, function (err) {
@@ -74,11 +86,20 @@ angular.module('starter.controllers', [])
         }
     })
 
-    .controller('ListDetailCtrl', function ($scope, $stateParams, ParseImageService) {
+    .controller('ListDetailCtrl', function ($scope, $stateParams, ParseImageService, ImageService,ParseConfiguration) {
+
+        // if not using parse then assign the image service to the default
+        // service
+        if (ParseConfiguration.USING_PARSE === false) {
+            ParseImageService = ImageService;
+            console.log("ParseConfiguration: " + ParseConfiguration.USING_PARSE);
+        }
+
         ParseImageService.get($stateParams.itemId).then(function (_data) {
             $scope.imageItem = _data;
-            console.log(JSON.stringify(_data.get('picture')._url));
-            $scope.$apply();
+            //$scope.$apply();
+        }, function(_error){
+            console.error(_error.message);
         });
         //console.log(JSON.stringify($scope.imageItem));
     })

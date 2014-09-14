@@ -1,10 +1,13 @@
+
 angular.module('starter.services', [])
 
-    .factory('ParseImageService', function ($window) {
-
-        console.log("parse initialize");
-        Parse.initialize("GRIoAKWUExfsT1q37Uyt66h4Lmx9ovvBAv2qigIw", "VVKntpb3zNpAgAhcEJHapDwKMVUKhIdX5QG0PVxf");
-
+/**
+ * A simple example service that returns some photo data.
+ *
+ * this service DOES save the information to parse
+ */
+    .
+    factory('ParseImageService', function ($window) {
 
         var _all = function () {
             var query = new Parse.Query("ImageInfo");
@@ -13,7 +16,7 @@ angular.module('starter.services', [])
         };
         var _delete = function (_objectId) {
             var query = new Parse.Query("ImageInfo");
-            return query.get(_objectId).then(function(_data){
+            return query.get(_objectId).then(function (_data) {
                 return _data.destroy();
             });
         };
@@ -70,8 +73,8 @@ angular.module('starter.services', [])
         return {
             all: _all,
             save: _save,
-            get : _get,
-            delete : _delete,
+            get: _get,
+            delete: _delete,
             /**
              * get settings from local storage
              * @returns {*}
@@ -91,16 +94,77 @@ angular.module('starter.services', [])
         }
     })
 /**
- * A simple example service that returns some data.
+ * A simple example service that returns some photo data.
+ *
+ * this service does not save the information to parse, it saves
+ * it locally in the array imageServiceData
  */
-    .factory('ImageService', function ($window) {
+    .factory('ImageService', function ($window, $q, $timeout) {
         // Might use a resource here that returns a JSON array
 
         // Some fake testing data
-        var friends = [
-            { id: 0, name: 'Scruff McGruff', timestamp: new Date()},
-            { id: 1, name: 'G.I. Joe', timestamp: new Date()}
+        var date = new Date();
+        var imageServiceData = [
+            { id: 0, name: 'Scruff McGruff', timestamp: date},
+            { id: 1, name: 'G.I. Joe', timestamp: date}
         ];
+
+        /**
+         *  This is a helper model that is created to allow the application UI to work with the
+         *  local datastore and the parse datastore without modifications
+         *
+         * @param _params
+         * @returns {{id: *, createdAt: *, get: get, set: set}}
+         * @constructor
+         */
+        var ImageModel = function (_params) {
+            var _data = {};
+
+            /**
+             *
+             * @param _params
+             * @private
+             */
+            this.set = function (_params) {
+
+                if (!_params) {
+                    return;
+                }
+
+
+                console.log(_params.timestamp);
+
+                this.id = _params.id;
+                this.createdAt = _params.timestamp;
+
+
+                _data['createdAt'] = _params.timestamp;
+                _data.caption = _params.name;
+                _data.id = _params.id;
+                _data.picture = { _url: _params.data};
+
+            };
+            /**
+             *
+             * @param _key
+             * @returns {*}
+             * @private
+             */
+            this.get = function (_key) {
+                return _data[_key]
+            };
+
+            this.set(_params);
+
+            /*
+             return {
+             'id': _data.id,
+             'createdAt': _data.name,
+             get: this._get,
+             set: this._set
+             };
+             */
+        };
 
         return {
             /**
@@ -121,19 +185,36 @@ angular.module('starter.services', [])
             },
             /**
              *
-             * @returns {{id: number, name: string}[]}
+             * @returns {Array}
              */
             all: function () {
-                return friends;
+
+                var deferred = $q.defer();
+
+                var returnArray = [];
+                angular.forEach(imageServiceData, function (_value, _key) {
+                    _value.data && console.log("length " + _value.data.length);
+                    this.push(new ImageModel(_value));
+                }, returnArray);
+
+                $timeout(function () {
+                    deferred.resolve(returnArray);
+                }, 1);
+
+                return deferred.promise;
             },
             /**
              *
              * @param friendId
              * @returns {*|{id: number, name: string}}
              */
-            get: function (friendId) {
+            get: function (imageId) {
                 // Simple index lookup
-                return friends[friendId];
+                var deferred = $q.defer();
+                $timeout(function () {
+                    deferred.resolve(new ImageModel(imageServiceData[imageId]));
+                }, 1);
+                return deferred.promise;
             },
             /**
              *
@@ -141,16 +222,33 @@ angular.module('starter.services', [])
              * @param _params.photo
              */
             save: function (_params) {
-                var id = friends.length;
-                friends.push({
-                    id: id,
-                    name: _params.caption,
-                    data: 'data:image/png;base64,' + _params.photo,
-                    timestamp: new Date()
-                })
+                var deferred = $q.defer();
+
+                var id = imageServiceData.length;
+
+                $timeout(function () {
+                    deferred.resolve(imageServiceData.push({
+                        id: id,
+                        name: _params.caption,
+                        data: 'data:image/png;base64,' + _params.photo,
+                        timestamp: new Date()
+                    }));
+                }, 1);
+
+                return deferred.promise;
             },
             delete: function (_params) {
-                friends.splice(_params.index, 1)
+                var deferred = $q.defer();
+
+                $timeout(function () {
+                    imageServiceData.splice(_params.index, 1)
+
+                    deferred.resolve();
+                }, 1);
+
+                return deferred.promise;
             }
         }
-    });
+    }
+)
+;

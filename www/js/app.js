@@ -22,9 +22,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
             }
 
-         });
+        });
     })
-
+/**
+ * see documentation: https://www.parse.com/apps/quickstart#parse_data/web/existing
+ *
+ * SET THESE VALUES IF YOU WANT TO USE PARSE, COMMENT THEM OUT TO USE THE DEFAULT
+ * SERVICE
+ *
+ * parse constants
+ */
+    .value('ParseConfiguration', {
+        applicationId: "set your app id",
+        javascriptKey: "your javascript key",
+        USING_PARSE: true
+    })
+/**
+ *
+ */
     .config(function ($stateProvider, $urlRouterProvider) {
 
         // Ionic uses AngularUI Router which uses the concept of states
@@ -37,7 +52,37 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             .state('tab', {
                 url: "/tab",
                 abstract: true,
-                templateUrl: "templates/tabs.html"
+                templateUrl: "templates/tabs.html",
+                resolve: {
+                    /**
+                     * This function will initialize parse before executing the code to render the
+                     * home tab view
+                     *
+                     * It will resolve successfully if you are using parse or not
+                     *
+                     * @param $q
+                     * @param $timeout
+                     * @param ParseConfiguration
+                     * @returns {*}
+                     */
+                    usingParse: function ($q, $timeout, ParseConfiguration) {
+
+
+                        if (ParseConfiguration.applicationId && (ParseConfiguration.applicationId === "set your app id")) {
+                            alert("Set Credentials to use Parse.com, see comment in app.js")
+                        }
+
+                        if (ParseConfiguration.applicationId && ParseConfiguration.javascriptKey) {
+                            console.log("parse initialize");
+                            Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
+                        } else {
+                            ParseConfiguration.USING_PARSE = false
+                        }
+
+                        return ParseConfiguration.USING_PARSE;
+
+                    }
+                }
             })
 
             // Each tab has its own nav history stack:
