@@ -1,5 +1,15 @@
 DC Web Women Code(Her) Ionic Framework Sample App
 ====
+##About This Project
+This is a simple application that was used to demonstrate the Ionic Framework
+ - based off of the tabs sample template
+ - uses ngCordova - [http://ngcordova.com/docs/](http://ngcordova.com/docs/)
+ - uses Camera plugin - org.apache.cordova.camera
+ - uses angular promises implementation [A promise/deferred implementation inspired by Kris Kowal's Q.](https://docs.angularjs.org/api/ng/service/$q)
+ - uses Parse.com to save images, also demonstrates the use of the Parse.File object
+ - uses the [ui-router resolve functionality](https://github.com/angular-ui/ui-router/wiki#resolve)
+
+The application allows the user to take pictures and save them to a in memory cache or if you set up Parse.com you can save the images to a parse datastore in the cloud. Images are saved with a caption, photo data and a timestamp
 
 ![alt tag](doc/Screenshot%202014-09-13%2019.30.52.png)
 ![alt tag](doc/Screenshot%202014-09-13%2019.30.57.png)
