@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 
-    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, $timeout,ParseImageService,ParseConfiguration) {
+    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, $timeout, ParseImageService, ParseConfiguration) {
 
         // if not using parse then assign the image service to the default
         // service
@@ -12,10 +12,10 @@ angular.module('starter.controllers', [])
 
         ParseImageService.all().then(function (_data) {
 
-            $timeout($scope.imageList = _data,0);
+            $timeout($scope.imageList = _data, 0);
 
             console.log(JSON.stringify(_data));
-        }, function(_error){
+        }, function (_error) {
             console.error(JSON.stringify(_error));
             alert(_error.message)
         });
@@ -23,10 +23,10 @@ angular.module('starter.controllers', [])
         // delete the selected row from table
         $scope.doDeleteRow = function (_index) {
             ParseImageService.delete(_index).then(function () {
-                return  ParseImageService.all().then(function (_data) {
-                    $timeout($scope.imageList = _data,0);
+                return ParseImageService.all().then(function (_data) {
+                    $timeout($scope.imageList = _data, 0);
                 });
-            }, function(_error){
+            }, function (_error) {
                 console.error(_error.message);
             });
         };
@@ -74,8 +74,8 @@ angular.module('starter.controllers', [])
 
                 console.log("update list");
 
-                return  ParseImageService.all().then(function (_data) {
-                    $timeout($scope.imageList = _data,0);
+                return ParseImageService.all().then(function (_data) {
+                    $timeout($scope.imageList = _data, 0);
                 });
 
             }, function (err) {
@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
         }
     })
 
-    .controller('ListDetailCtrl', function ($scope, $stateParams, ParseImageService, $timeout,ImageService,ParseConfiguration) {
+    .controller('ListDetailCtrl', function ($scope, $stateParams, ParseImageService, $timeout, ImageService, ParseConfiguration) {
 
         // if not using parse then assign the image service to the default
         // service
@@ -95,26 +95,38 @@ angular.module('starter.controllers', [])
         }
 
         ParseImageService.get($stateParams.itemId).then(function (_data) {
-            $timeout($scope.imageItem = _data,0);
-        }, function(_error){
+            $timeout($scope.imageItem = _data, 0);
+        }, function (_error) {
             console.error(_error.message);
         });
         //console.log(JSON.stringify($scope.imageItem));
     })
 
-    .controller('AccountCtrl', function ($scope, ImageService) {
+    .controller('AccountCtrl', function ($scope, ImageService, ParseConfiguration, ParseImageService, $timeout) {
+        var photosList = [];
 
         // get any saved properties
         $scope.imageSettings = ImageService.imageSettings();
 
+        if (ParseConfiguration.USING_PARSE) {
+            // get number of photos
+            ParseImageService.all().then(function (_data) {
+                $timeout(function () {
+                    photosList = _data;
+                    $scope.photoCount = photosList.length;
+                }, 0);
+            });
+        } else {
+            // get number of photos
+            photosList = ImageService.all();
+            $scope.photoCount = photosList.length;
+        }
 
-        // get number of photos
-        $scope.photoCount = ImageService.all().length;
 
         // get amount of space they are consuming
-        var imageList = ImageService.all();
+
         var photoSize = 0;
-        angular.forEach(imageList, function (_value, _key) {
+        angular.forEach(photosList, function (_value, _key) {
             _value.data && console.log("length " + _value.data.length);
             photoSize += (_value.data ? _value.data.length : 0);
         }, photoSize);
