@@ -1,7 +1,10 @@
 angular.module('starter.controllers', [])
 
 
-    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, $timeout, ParseImageService, ParseConfiguration) {
+    .controller('ListCtrl', function (user, $state, $scope, ImageService, $cordovaCamera, $ionicPopup, $timeout, ParseImageService, ParseConfiguration, UserService) {
+
+
+        alert(JSON.stringify(user));
 
         // if not using parse then assign the image service to the default
         // service
@@ -32,6 +35,14 @@ angular.module('starter.controllers', [])
         };
 
         console.log(JSON.stringify(ImageService.imageSettings()));
+
+
+        // add function to take a picture using the camera
+        $scope.doLogout = function () {
+            UserService.logout(function () {
+                $state.go('app-login');
+            });
+        };
 
         // add function to take a picture using the camera
         $scope.doTakePicture = function () {

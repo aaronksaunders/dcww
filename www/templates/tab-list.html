@@ -1,15 +1,20 @@
 <ion-view title="Image Feed">
-    <ion-nav-buttons>
-        <div class="buttons right-buttons">
-            <button class="button" ng-click="doTakePicture()">
-                Take Picture
-            </button>
-        </div>
+    <ion-nav-buttons side="left">
+        <button class="button" ng-click="doTakePicture()">
+            Take Picture
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="doLogout()">
+            Logout
+        </button>
     </ion-nav-buttons>
     <ion-content>
         <ion-list can-swipe="true">
-            <ion-item class="item item-thumbnail-left" ng-repeat="imageItem in imageList" type="item-text-wrap" href="#/tab/list/{{imageItem.id}}">
+            <ion-item class="item item-thumbnail-left" ng-repeat="imageItem in imageList" type="item-text-wrap"
+                      href="#/tab/list/{{imageItem.id}}">
                 <img ng-src="{{imageItem.get('picture').url()}}">
+
                 <div><strong>{{imageItem.get('caption')}}</strong></div>
                 <div class="">{{imageItem.createdAt | date:"medium" }}</div>
                 <ion-option-button class="button-assertive" ng-click="doDeleteRow(imageItem.id)">

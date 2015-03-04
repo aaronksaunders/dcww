@@ -5,10 +5,30 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter',
+    [
+        'ionic',
+        'starter.controllers',
+        'starter.services',
+        'user.controllers',
+        'user.services',
+        'ngCordova'
+    ])
 
-    .run(function ($ionicPlatform, $rootScope) {
+    .run(function ($ionicPlatform, $rootScope, $state) {
         $rootScope.isAndroid = ionic.Platform.isAndroid();
+
+        // this code handles any error when trying to change state.
+        $rootScope.$on('$stateChangeError',
+            function (event, toState, toParams, fromState, fromParams, error) {
+                console.log('$stateChangeError ' + error && error.debug);
+
+                // if the error is "noUser" the go to login state
+                if (error && error.error === "noUser") {
+                    $state.go('app-login', {});
+                }
+            });
+
 
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -48,6 +68,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         // Set up the various states which the app can be in.
         // Each state's controller can be found in controllers.js
         $stateProvider
+            // create account state
+            .state('app-signup', {
+                url: "/signup",
+                templateUrl: "templates/user/signup.html",
+                controller: "SignUpController"
+            })
+            // login state that is needed to log the user in after logout
+            // or if there is no user object available
+            .state('app-login', {
+                url: "/login",
+                templateUrl: "templates/user/login.html",
+                controller: "LoginController",
+                resolve: {
+                    user: function (UserService) {
+                        return UserService.init()
+                    }
+                }
+            })
 
             // setup an abstract state for the tabs directive
             .state('tab', {
@@ -55,6 +93,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 abstract: true,
                 templateUrl: "templates/tabs.html",
                 resolve: {
+                    user: function (UserService) {
+                        return UserService.init()
+                    },
                     /**
                      * This function will initialize parse before executing the code to render the
                      * home tab view
@@ -92,7 +133,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             })
 
             // Each tab has its own nav history stack:
-
             .state('tab.list', {
                 url: '/list',
                 views: {
