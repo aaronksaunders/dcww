@@ -33,9 +33,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
  * parse constants
  */
     .value('ParseConfiguration', {
-        applicationId: "set your app id",
-        javascriptKey: "your javascript key",
-        USING_PARSE: true
+        applicationId: "",
+        javascriptKey: "",
+        USING_PARSE: true,
+        initialized: false
     })
 /**
  *
@@ -67,6 +68,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                      */
                     usingParse: function ($q, $timeout, ParseConfiguration) {
 
+                        if (ParseConfiguration.initialized) {
+                            return ParseConfiguration.USING_PARSE;
+                        }
+
 
                         if (ParseConfiguration.applicationId && (ParseConfiguration.applicationId === "set your app id")) {
                             alert("Set Credentials to use Parse.com, see comment in app.js")
@@ -79,6 +84,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                             ParseConfiguration.USING_PARSE = false
                         }
 
+                        ParseConfiguration.initialized = true;
                         return ParseConfiguration.USING_PARSE;
 
                     }
