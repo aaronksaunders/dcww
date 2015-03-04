@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 
-    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, ParseImageService,ParseConfiguration) {
+    .controller('ListCtrl', function ($scope, ImageService, $cordovaCamera, $ionicPopup, $timeout,ParseImageService,ParseConfiguration) {
 
         // if not using parse then assign the image service to the default
         // service
@@ -11,9 +11,10 @@ angular.module('starter.controllers', [])
         }
 
         ParseImageService.all().then(function (_data) {
-            $scope.imageList = _data;
-           // $scope.$apply();
-            console.log(JSON.stringify(_data[0].id));
+
+            $timeout($scope.imageList = _data,0);
+
+            console.log(JSON.stringify(_data));
         }, function(_error){
             console.error(JSON.stringify(_error));
             alert(_error.message)
@@ -23,8 +24,7 @@ angular.module('starter.controllers', [])
         $scope.doDeleteRow = function (_index) {
             ParseImageService.delete(_index).then(function () {
                 return  ParseImageService.all().then(function (_data) {
-                    $scope.imageList = _data;
-                    //$scope.$apply();
+                    $timeout($scope.imageList = _data,0);
                 });
             }, function(_error){
                 console.error(_error.message);
@@ -75,8 +75,7 @@ angular.module('starter.controllers', [])
                 console.log("update list");
 
                 return  ParseImageService.all().then(function (_data) {
-                    $scope.imageList = _data;
-                   // $scope.$apply();
+                    $timeout($scope.imageList = _data,0);
                 });
 
             }, function (err) {
@@ -96,8 +95,7 @@ angular.module('starter.controllers', [])
         }
 
         ParseImageService.get($stateParams.itemId).then(function (_data) {
-            $scope.imageItem = _data;
-            //$scope.$apply();
+            $timeout($scope.imageItem = _data,0);
         }, function(_error){
             console.error(_error.message);
         });
