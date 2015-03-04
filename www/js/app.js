@@ -63,7 +63,6 @@ angular.module('starter',
  */
     .config(function ($stateProvider, $urlRouterProvider) {
 
-        // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
         // Set up the various states which the app can be in.
         // Each state's controller can be found in controllers.js
@@ -79,22 +78,21 @@ angular.module('starter',
             .state('app-login', {
                 url: "/login",
                 templateUrl: "templates/user/login.html",
-                controller: "LoginController",
-                resolve: {
-                    user: function (UserService) {
-                        return UserService.init()
-                    }
-                }
+                controller: "LoginController"
             })
 
-            // setup an abstract state for the tabs directive
+            // setup an abstract state for the tabs directive, check for a user
+            // object here is the resolve, if there is no user then redirect the
+            // user back to login state on the changeStateError
             .state('tab', {
                 url: "/tab",
                 abstract: true,
                 templateUrl: "templates/tabs.html",
                 resolve: {
                     user: function (UserService) {
-                        return UserService.init()
+                        var value = UserService.init();
+                        // alert(value); // for debugging
+                        return value;
                     },
                     /**
                      * This function will initialize parse before executing the code to render the

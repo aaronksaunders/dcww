@@ -14,15 +14,15 @@ angular.module('user.services', [])
                  */
                 init: function () {
 
+
                     // if initialized, then return the activeUser
-                    if (parseInitialized) {
-                        return Parse.User.current();
+                    if (parseInitialized === false) {
+                        Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
+                        parseInitialized = true;
+                        console.log("parse initialized in init function");
                     }
-                    Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
-                    parseInitialized = true;
 
                     var currentUser = Parse.User.current();
-
                     if (currentUser) {
                         return $q.when(currentUser);
                     } else {
@@ -72,8 +72,7 @@ angular.module('user.services', [])
                  * @returns {Promise}
                  */
                 login: function (_user, _password) {
-                    var promise =  Parse.User.logIn(_user, _password);
-                    return promise;
+                    return Parse.User.logIn(_user, _password);
                 },
                 /**
                  *
