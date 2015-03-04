@@ -14,7 +14,9 @@ angular.module('user.services', [])
                  */
                 init: function () {
 
+                    var value = null;
 
+                    var deferred = $q.defer();
                     // if initialized, then return the activeUser
                     if (parseInitialized === false) {
                         Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
@@ -22,13 +24,15 @@ angular.module('user.services', [])
                         console.log("parse initialized in init function");
                     }
 
-                    var currentUser = Parse.User.current();
-                    if (currentUser) {
-                        return $q.when(currentUser);
-                    } else {
-                        return $q.reject({error: "noUser"});
-                    }
-
+                    setTimeout(function () {
+                        var currentUser = Parse.User.current();
+                        if (currentUser) {
+                            deferred.resolve(currentUser);
+                        } else {
+                            deferred.reject({error: "noUser"});
+                        }
+                    }, 100);
+                    return deferred.promise;
                 },
                 /**
                  *

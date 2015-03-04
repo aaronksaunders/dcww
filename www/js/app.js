@@ -16,18 +16,6 @@ angular.module('starter',
     ])
 
     .run(function ($ionicPlatform, $rootScope, $state) {
-        $rootScope.isAndroid = ionic.Platform.isAndroid();
-
-        // this code handles any error when trying to change state.
-        $rootScope.$on('$stateChangeError',
-            function (event, toState, toParams, fromState, fromParams, error) {
-                console.log('$stateChangeError ' + error && error.debug);
-
-                // if the error is "noUser" the go to login state
-                if (error && error.error === "noUser") {
-                    $state.go('app-login', {});
-                }
-            });
 
 
         $ionicPlatform.ready(function () {
@@ -42,6 +30,18 @@ angular.module('starter',
 
             }
 
+            $rootScope.isAndroid = ionic.Platform.isAndroid();
+
+            // this code handles any error when trying to change state.
+            $rootScope.$on('$stateChangeError',
+                function (event, toState, toParams, fromState, fromParams, error) {
+                    console.log('$stateChangeError ' + error && error.debug);
+
+                    // if the error is "noUser" the go to login state
+                    if (error && error.error === "noUser") {
+                        $state.go('app-login', {});
+                    }
+                });
         });
     })
 /**
@@ -53,8 +53,8 @@ angular.module('starter',
  * parse constants
  */
     .value('ParseConfiguration', {
-        applicationId: "",
-        javascriptKey: "",
+        applicationId: " ",
+        javascriptKey: " ",
         USING_PARSE: true,
         initialized: false
     })
@@ -93,39 +93,6 @@ angular.module('starter',
                         var value = UserService.init();
                         // alert(value); // for debugging
                         return value;
-                    },
-                    /**
-                     * This function will initialize parse before executing the code to render the
-                     * home tab view
-                     *
-                     * It will resolve successfully if you are using parse or not
-                     *
-                     * @param $q
-                     * @param $timeout
-                     * @param ParseConfiguration
-                     * @returns {*}
-                     */
-                    usingParse: function ($q, $timeout, ParseConfiguration) {
-
-                        if (ParseConfiguration.initialized) {
-                            return ParseConfiguration.USING_PARSE;
-                        }
-
-
-                        if (ParseConfiguration.applicationId && (ParseConfiguration.applicationId === "set your app id")) {
-                            alert("Set Credentials to use Parse.com, see comment in app.js")
-                        }
-
-                        if (ParseConfiguration.applicationId && ParseConfiguration.javascriptKey) {
-                            console.log("parse initialize");
-                            Parse.initialize(ParseConfiguration.applicationId, ParseConfiguration.javascriptKey);
-                        } else {
-                            ParseConfiguration.USING_PARSE = false
-                        }
-
-                        ParseConfiguration.initialized = true;
-                        return ParseConfiguration.USING_PARSE;
-
                     }
                 }
             })
