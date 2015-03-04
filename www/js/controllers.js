@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
         }
     })
 
-    .controller('ListDetailCtrl', function ($scope, $stateParams, ParseImageService, ImageService,ParseConfiguration) {
+    .controller('ListDetailCtrl', function ($scope, $stateParams, ParseImageService, $timeout,ImageService,ParseConfiguration) {
 
         // if not using parse then assign the image service to the default
         // service
