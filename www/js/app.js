@@ -33,8 +33,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
  * parse constants
  */
     .value('ParseConfiguration', {
-        applicationId: "GRIoAKWUExfsT1q37Uyt66h4Lmx9ovvBAv2qigIw",
-        javascriptKey: "VVKntpb3zNpAgAhcEJHapDwKMVUKhIdX5QG0PVxf",
+        applicationId: "set your app id",
+        javascriptKey: "your javascript key",
         USING_PARSE: true
     })
 /**
