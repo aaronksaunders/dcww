@@ -16,16 +16,36 @@
   },
   "cordovaPlugins": [
     "org.apache.cordova.camera",
-    "org.apache.cordova.statusbar",
-    "org.apache.cordova.console",
     "org.apache.cordova.device",
     "com.ionic.keyboard",
-    "https://github.com/grrrian/phonegap-parse-plugin",
+    {
+      "locator": "https://github.com/apache/cordova-plugin-whitelist.git",
+      "id": "cordova-plugin-whitelist"
+    },
+    {
+      "locator": "https://github.com/grrrian/phonegap-parse-plugin",
+      "id": "com.parse.cordova.core.pushplugin"
+    },
     "cordova-plugin-console",
     "cordova-plugin-statusbar",
-    "https://github.com/RaananW/PhoneGap-Image-Resizer"
+    {
+      "locator": "https://github.com/RaananW/PhoneGap-Image-Resizer",
+      "id": "com.raananw.imageResizer"
+    },
+    "org.apache.cordova.file"
   ],
   "cordovaPlatforms": [
-    "android"
+    "android",
+    "ios",
+    {
+      "platform": "android",
+      "version": "",
+      "locator": "android"
+    },
+    {
+      "platform": "ios",
+      "version": "",
+      "locator": "ios"
+    }
   ]
 }
