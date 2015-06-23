@@ -19,6 +19,13 @@
     "org.apache.cordova.statusbar",
     "org.apache.cordova.console",
     "org.apache.cordova.device",
-    "com.ionic.keyboard"
+    "com.ionic.keyboard",
+    "https://github.com/avivais/phonegap-parse-plugin",
+    "https://github.com/grrrian/phonegap-parse-plugin",
+    "cordova-plugin-console",
+    "cordova-plugin-statusbar"
+  ],
+  "cordovaPlatforms": [
+    "android"
   ]
 }

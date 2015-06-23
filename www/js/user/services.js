@@ -1,7 +1,7 @@
 angular.module('user.services', [])
 
-    .service('UserService', ['$q', 'ParseConfiguration',
-        function ($q, ParseConfiguration) {
+    .service('UserService', ['$q', 'ParseConfiguration','$ionicUser',
+        function ($q, ParseConfiguration,$ionicUser) {
 
             var parseInitialized = false;
 
@@ -27,6 +27,13 @@ angular.module('user.services', [])
                     setTimeout(function () {
                         var currentUser = Parse.User.current();
                         if (currentUser) {
+
+
+                            $ionicUser.identify({
+                                user_id: currentUser.id,
+                                name: currentUser.get("email"),
+                            });
+
                             deferred.resolve(currentUser);
                         } else {
                             deferred.reject({error: "noUser"});

@@ -8,17 +8,24 @@
 angular.module('starter',
     [
         'ionic',
+        'ionic.service.core',
+        'ionic.service.analytics',
         'starter.controllers',
         'starter.services',
         'user.controllers',
         'user.services',
+        'parse.services',
         'ngCordova'
     ])
 
-    .run(function ($ionicPlatform, $rootScope, $state) {
+    .run(function ($ionicPlatform, $rootScope, $state, $ionicAnalytics, ParseService) {
 
 
         $ionicPlatform.ready(function () {
+
+            // Add this inside your $ionicPlatform.ready function that is defined inside the run function:
+            $ionicAnalytics.register();
+
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -27,10 +34,30 @@ angular.module('starter',
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
-
             }
 
             $rootScope.isAndroid = ionic.Platform.isAndroid();
+
+            // Get Parse Push Configured and Initiated
+            ParseService.initialize().then(function () {
+
+                return ParseService.getInstallationId();
+
+            }).then(function (_response) {
+                console.log("Parse Initialized " + _response);
+
+                return ParseService.subscribe("broadcast_registered");
+
+            }).then(function (_response) {
+                return ParseService.registerCallback(function(pnObj){
+                    alert("in assigned callback " + JSON.stringify(pnObj));
+                });
+
+            }).then(function (success) {
+                console.log("Parse callback registered " + success);
+            }, function error(_error) {
+                alert(_error);
+            });
 
             // this code handles any error when trying to change state.
             $rootScope.$on('$stateChangeError',
@@ -53,15 +80,22 @@ angular.module('starter',
  * parse constants
  */
     .value('ParseConfiguration', {
-        applicationId: " ",
-        javascriptKey: " ",
+        applicationId: "GRIoAKWUExfsT1q37Uyt66h4Lmx9ovvBAv2qigIw",
+        javascriptKey: "VVKntpb3zNpAgAhcEJHapDwKMVUKhIdX5QG0PVxf",
+        clientKey: "1M6398ExrwRb5d7FcSbhd8IoJvmyEDmG1FrS31Fc",
         USING_PARSE: true,
         initialized: false
     })
 /**
  *
  */
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $ionicAppProvider) {
+
+        // Identify app
+        $ionicAppProvider.identify({
+            app_id: 'd84ac019',
+            api_key: '5b46eb15842120181a8a9267e5df069557877783270f3e44'
+        });
 
         // Learn more here: https://github.com/angular-ui/ui-router
         // Set up the various states which the app can be in.
