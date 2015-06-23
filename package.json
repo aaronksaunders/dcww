@@ -20,10 +20,10 @@
     "org.apache.cordova.console",
     "org.apache.cordova.device",
     "com.ionic.keyboard",
-    "https://github.com/avivais/phonegap-parse-plugin",
     "https://github.com/grrrian/phonegap-parse-plugin",
     "cordova-plugin-console",
-    "cordova-plugin-statusbar"
+    "cordova-plugin-statusbar",
+    "https://github.com/RaananW/PhoneGap-Image-Resizer"
   ],
   "cordovaPlatforms": [
     "android"
