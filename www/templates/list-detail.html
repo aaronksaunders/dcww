@@ -11,7 +11,12 @@
             <div class="">{{imageItem.createdAt | date:"medium" }}</div>
         </ion-item>
         <ion-item>
-            <img ng-src="{{imageItem.get('picture')._url}}" width="270" >
+        <div class="blockUIParent">
+                <img ng-src="{{imageItem.get('picture')._url}}" class="blockUIimg">
+        </div>
+        </ion-item>
+        <ion-item>
+            <button class="button button-block">Show On Map</button>
         </ion-item>
     </ion-content>
 </ion-view>
