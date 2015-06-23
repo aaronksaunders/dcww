@@ -142,6 +142,7 @@ angular.module('starter.services', [])
                 _data.caption = _params.name;
                 _data.id = _params.id;
                 _data.picture = { _url: _params.data};
+                _data.location = _params.location
 
             };
             /**

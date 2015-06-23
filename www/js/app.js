@@ -15,6 +15,7 @@ angular.module('starter',
         'user.controllers',
         'user.services',
         'parse.services',
+        'leaflet-directive',
         'ngCordova'
     ])
 
@@ -147,6 +148,15 @@ angular.module('starter',
                     'tab-list': {
                         templateUrl: 'templates/list-detail.html',
                         controller: 'ListDetailCtrl'
+                    }
+                }
+            })
+            .state('tab.map-view', {
+                url: '/map/:itemId',
+                views: {
+                    'tab-list': {
+                        templateUrl: 'templates/map-view.html',
+                        controller: 'MapViewCtrl'
                     }
                 }
             })

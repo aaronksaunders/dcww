@@ -113,6 +113,78 @@ angular.module('starter.controllers', [])
         //console.log(JSON.stringify($scope.imageItem));
     })
 
+    .controller('MapViewCtrl', function ($scope, $stateParams, ParseImageService, $timeout, ImageService, ParseConfiguration) {
+
+        // if not using parse then assign the image service to the default
+        // service
+        if (ParseConfiguration.USING_PARSE === false) {
+            ParseImageService = ImageService;
+            console.log("ParseConfiguration: " + ParseConfiguration.USING_PARSE);
+        }
+
+        //console.log(JSON.stringify($scope.imageItem));
+
+
+        /**
+         * Once state loaded, get put map on scope.
+         */
+        $scope.$on("$stateChangeSuccess", function () {
+
+
+            ParseImageService.get($stateParams.itemId).then(function (_data) {
+                $timeout($scope.imageItem = _data, 0);
+
+
+                $scope.map = {
+                    defaults: {
+                        tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                        maxZoom: 18,
+                        zoomControlPosition: 'bottomleft'
+                    },
+                    markers: {},
+                    events: {
+                        map: {
+                            enable: ['context'],
+                            logic: 'emit'
+                        }
+                    }
+                };
+
+                //$scope.goTo(0);
+                var locationInfo = $scope.imageItem.get("location");
+
+                if (locationInfo) {
+                    $scope.map.center = {
+                        lat: Number(locationInfo.latitude),
+                        lng: Number(locationInfo.longitude),
+                        zoom: 16
+                    };
+
+
+                    $scope.map.markers.now = {
+                        lat: Number(locationInfo.latitude),
+                        lng: Number(locationInfo.longitude),
+                        message: "Picture Taken Here",
+                        focus: true,
+                        draggable: false
+                    };
+                } else {
+                    alert("No Location Information");
+                }
+            }, function (_error) {
+                console.error(_error.message);
+
+                //$scope.goTo(0);
+                $scope.map.center  = {
+                    lat : 38.85,
+                    lng : -77.04,
+                    zoom : 13
+                };
+            });
+
+
+        });
+    })
     .controller('AccountCtrl', function ($scope, ImageService, ParseConfiguration, ParseImageService, $timeout) {
         var photosList = [];
 

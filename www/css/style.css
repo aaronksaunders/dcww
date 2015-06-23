@@ -7,3 +7,12 @@
 .blockUIParent {
     text-align: center;
 }
+
+
+.scroll, .angular-leaflet-map {
+    height: 100%;
+}
+
+.leaflet-bottom {
+    bottom : 10px;
+}
