@@ -9,6 +9,7 @@ This is a simple application that was used to demonstrate the Ionic Framework
  - uses Parse.com to save images, also demonstrates the use of the Parse.File object
  - uses the [ui-router resolve functionality](https://github.com/angular-ui/ui-router/wiki#resolve)
  - uses [https://github.com/grrrian/phonegap-parse-plugin](https://github.com/grrrian/phonegap-parse-plugin) - Push Notifications with Parse
+ - uses [angular-leaflet-directive](https://github.com/tombatossals/angular-leaflet-directive) for map integration for showing locations of images
 
 The application allows the user to take pictures and save them to a in memory cache or if you set up Parse.com you can save the images to a parse datastore in the cloud. Images are saved with a caption, photo data and a timestamp
 

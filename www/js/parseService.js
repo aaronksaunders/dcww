@@ -1,3 +1,7 @@
+//
+// This service file provides a wrapper around a Plugin to provide push services to the application
+// using Parse.com
+//
 angular.module('parse.services', [])
 
     .service('ParseService', ['$q', '$window', 'ParseConfiguration',
