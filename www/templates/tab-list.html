@@ -11,9 +11,25 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-list can-swipe="true">
-            <ion-item class="item item-thumbnail-left" ng-repeat="imageItem in imageList" type="item-text-wrap"
+
+            <ion-item ng-hide="imageItem.get('thumbBase64')"
+                      class="item item-thumbnail-left" ng-repeat="imageItem in imageList" type="item-text-wrap"
                       href="#/tab/list/{{imageItem.id}}">
-                <img ng-src="{{imageItem.get('picture').url()}}">
+
+                <img ng-src="{{ imageItem.get('picture').url()}}">
+
+                <div><strong>{{imageItem.get('caption')}}</strong></div>
+                <div class="">{{imageItem.createdAt | date:"medium" }}</div>
+                <div class="">{{imageItem.updatedAt | date:"medium" }}</div>
+                <ion-option-button class="button-assertive" ng-click="doDeleteRow(imageItem.id)">
+                    DELETE
+                </ion-option-button>
+            </ion-item>
+
+
+            <ion-item ng-hide="!imageItem.get('thumbBase64')" class="item item-thumbnail-left" ng-repeat="imageItem in imageList" type="item-text-wrap"
+                      href="#/tab/list/{{imageItem.id}}">
+                <img  ng-src="{{ ('data:image/jpeg;base64,' +imageItem.get('thumbBase64')) }}">
 
                 <div><strong>{{imageItem.get('caption')}}</strong></div>
                 <div class="">{{imageItem.createdAt | date:"medium" }}</div>
@@ -21,6 +37,7 @@
                     DELETE
                 </ion-option-button>
             </ion-item>
+
         </ion-list>
     </ion-content>
 </ion-view>

@@ -18,6 +18,18 @@
                 </div>
             </label>
         </div>
+        <div class="item item-toggle">
+            <strong>Allow Edit:</strong>
+            <label class="toggle toggle-positive">
+                <input type="checkbox"
+                       value="{{imageSettings.allowEdit}}"
+                       ng-model="imageSettings.allowEdit">
+
+                <div class="track">
+                    <div class="handle"></div>
+                </div>
+            </label>
+        </div>
         <ion-item>
             <div>
                 <p><strong>Image Quality:</strong> {{imageSettings.quality}}</p>
@@ -36,7 +48,7 @@
 
                 <div class="range">
                     <i class="icon ion-minus"></i>
-                    <input type="range" name="imageDimension" min="100" max="350"
+                    <input type="range" name="imageDimension" min="200" max="550"
                            value="{{imageSettings.dimensions}}"
                            ng-model="imageSettings.dimensions">
                     <i class="icon ion-plus"></i>

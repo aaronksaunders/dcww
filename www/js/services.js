@@ -11,7 +11,7 @@ angular.module('starter.services', [])
 
         var _all = function () {
             var query = new Parse.Query("ImageInfo");
-            //query.descending("gpa");
+            query.descending("createdAt");
             return query.find();
         };
         var _delete = function (_objectId) {
@@ -34,13 +34,19 @@ angular.module('starter.services', [])
             var ImageObject = Parse.Object.extend("ImageInfo");
 
 
-            if (_params.photo != "") {
+            if (_params.photo !== "") {
+
+                console.log("_params.photo " + _params.photo);
+
                 // create the parse file
                 var imageFile = new Parse.File("mypic.jpg", {base64: _params.photo});
-                console.log(imageFile);
+         //       var imageFile = new Parse.File("mypic.jpg", _params.photo);
+
 
                 // save the parse file
                 return imageFile.save().then(function () {
+
+                    _params.photo = null;
 
                     // create object to hold caption and file reference
                     var imageObject = new ImageObject();
@@ -48,6 +54,8 @@ angular.module('starter.services', [])
                     // set object properties
                     imageObject.set("caption", _params.caption);
                     imageObject.set("picture", imageFile);
+                    imageObject.set("thumbBase64", _params.thumbBase64);
+                    imageObject.set("location", new Parse.GeoPoint(_params.coords.latitude, _params.coords.longitude));
 
                     // save object to parse backend
                     return imageObject.save();
@@ -82,7 +90,7 @@ angular.module('starter.services', [])
             imageSettings: function () {
                 var savedData = $window.localStorage.getItem("application.image.props") || null;
                 return (savedData !== null ? JSON.parse(savedData) :
-                { quality: 75, dimensions: 250, saveToAlbum: false});
+                { quality: 50, dimensions: 250, saveToAlbum: false});
             },
             /**
              * save settings to local storage
@@ -175,7 +183,7 @@ angular.module('starter.services', [])
             imageSettings: function () {
                 var savedData = $window.localStorage.getItem("application.image.props") || null;
                 return (savedData !== null ? JSON.parse(savedData) :
-                { quality: 75, dimensions: 250, saveToAlbum: false});
+                { quality: 85, dimensions: 350, saveToAlbum: false});
             },
             /**
              * save settings to local storage

@@ -5,8 +5,12 @@ angular.module('parse.services', [])
 
             return {
                 initialize: function () {
+
+                   console.log("Missing Parse Plugin " + JSON.stringify($window.parsePlugin));
+
                     var deferred = $q.defer();
                     $window.parsePlugin.initialize(ParseConfiguration.applicationId, ParseConfiguration.clientKey, function () {
+                        console.log("Initialized Parse Plugin");
                         deferred.resolve('success');
                     }, function (e) {
                         deferred.reject(e);

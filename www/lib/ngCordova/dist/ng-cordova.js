@@ -260,7 +260,7 @@ angular.module('ngCordova.plugins.bluetoothSerial', [])
 
 angular.module('ngCordova.plugins.camera', [])
 
-  .factory('$cordovaCamera', ['$q', function ($q) {
+  .factory('$cordovaCamera', ['$q', '$timeout', function ($q,$timeout) {
 
     return {
       getPicture: function (options) {

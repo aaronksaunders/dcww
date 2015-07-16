@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 
-    .controller('ListCtrl', function (user, $state, $scope, ImageService, $cordovaCamera, $ionicPopup, $timeout, ParseImageService, ParseConfiguration, UserService) {
+    .controller('ListCtrl', function (user, $state, $q, $scope, ImageService, $window, $cordovaCamera, $ionicPopup, $timeout, ParseImageService, ParseConfiguration, UserService) {
 
 
         alert(JSON.stringify(user));
@@ -17,7 +17,7 @@ angular.module('starter.controllers', [])
 
             $timeout($scope.imageList = _data, 0);
 
-            console.log(JSON.stringify(_data));
+            //console.log(JSON.stringify(_data));
         }, function (_error) {
             console.error(JSON.stringify(_error));
             alert(_error.message)
@@ -44,54 +44,114 @@ angular.module('starter.controllers', [])
             });
         };
 
+        function resizeTheImage(originalImageData) {
+            var deferred = $q.defer();
+            $window.imageResizer.resizeImage(function (data) {
+
+                console.log("resizeImage success: " + data.width + " " + data.height);
+                deferred.resolve(data.imageData);
+
+            }, function (error) {
+                console.log("Error : \r\n" + error);
+                deferred.reject(error);
+            }, originalImageData, 0, 200, { //200x200
+                resizeType: ImageResizer.RESIZE_TYPE_MAX_PIXEL,
+                imageDataType: ImageResizer.IMAGE_DATA_TYPE_BASE64,
+                pixelDensity: true,
+                quality: 50,
+                //imageDataType: ImageResizer.IMAGE_DATA_TYPE_URL,
+                photoAlbum: 0,
+                format: 'jpg'
+            });
+            return deferred.promise;
+        }
+
+        function getGeoPosition() {
+            console.log("get location");
+            var deferred = $q.defer();
+            navigator.geolocation.getCurrentPosition(function (position) {
+                console.log(position.coords.latitude, position.coords.longitude);
+                deferred.resolve(position);
+            });
+            return deferred.promise;
+        }
+
         // add function to take a picture using the camera
         $scope.doTakePicture = function () {
+
+            $timeout(function () {
+                _doTakePicture();
+            }, 3000);
+        };
+
+
+        var _doTakePicture = function () {
+            var originalImageData;
+            var _resultParams;
+            var coords;
 
             var options = {
                 quality: ImageService.imageSettings().quality,
                 destinationType: Camera.DestinationType.DATA_URL,
                 sourceType: Camera.PictureSourceType.CAMERA,
-                allowEdit: true,
-                correctOrientation: true,
+                allowEdit: ImageService.imageSettings().allowEdit,
+                // on android correct Orientation
+                correctOrientation: ImageService.imageSettings().allowEdit ? false : true,
                 encodingType: Camera.EncodingType.JPEG,
                 targetWidth: ImageService.imageSettings().dimensions,
-                targetHeight: ImageService.imageSettings().dimensions,
-                popoverOptions: CameraPopoverOptions,
+                //targetHeight: ImageService.imageSettings().dimensions,
+                //popoverOptions: CameraPopoverOptions,
                 saveToPhotoAlbum: ImageService.imageSettings().saveToAlbum
             };
 
             $cordovaCamera.getPicture(options).then(function (_imageData) {
                 // Success! Image data is here
-                console.log("Success! Image data is here");
+                console.log("Success! Image data is here ");
+                originalImageData = _imageData;
 
 
                 // returns a promise
-                return $ionicPopup.prompt({
-                    title: 'Please enter caption for the image'
-                }).then(function (_caption) {
-                    return {
-                        caption: _caption,
-                        photo: _imageData
-                    };
+                //$timeout(function() {
+                //    return $ionicPopup.prompt({
+                //        title: 'Please enter caption for the image'
+                //    }).then(function (_caption) {
+                //        return {
+                //            caption: _caption,
+                //            photo: theImageData,
+                //            isFile: true
+                //        };
+                //    });
+                //},1);
+
+                return getGeoPosition();
+
+            }).then(function (position) {
+
+                coords = position.coords;
+
+                return resizeTheImage(originalImageData);
+
+            }).then(function (resizedImageData) {
+
+                console.log("Trying to save everything");
+
+                return ParseImageService.save({
+                    thumbBase64: resizedImageData,
+                    photo: originalImageData,
+                    caption: "simple caption",
+                    coords: coords
                 });
+            }).then(function (result) {
+                console.log("Saved everything ");
 
+                return ParseImageService.all()
 
-            }).then(function (_resultParams) {
-
-                // You have the caption now
-                return ParseImageService.save(_resultParams);
-
-            }).then(function () {
-
-                console.log("update list");
-
-                return ParseImageService.all().then(function (_data) {
-                    $timeout($scope.imageList = _data, 0);
-                });
+            }).then(function (_data) {
+                $timeout($scope.imageList = _data, 0);
 
             }, function (err) {
                 // An error occured. Show a message to the user
-                alert("Error " + err);
+                console.log("Error When taking Photo " + err);
             });
         }
     })
@@ -121,9 +181,6 @@ angular.module('starter.controllers', [])
             ParseImageService = ImageService;
             console.log("ParseConfiguration: " + ParseConfiguration.USING_PARSE);
         }
-
-        //console.log(JSON.stringify($scope.imageItem));
-
 
         /**
          * Once state loaded, get put map on scope.
@@ -175,10 +232,10 @@ angular.module('starter.controllers', [])
                 console.error(_error.message);
 
                 //$scope.goTo(0);
-                $scope.map.center  = {
-                    lat : 38.85,
-                    lng : -77.04,
-                    zoom : 13
+                $scope.map.center = {
+                    lat: 38.85,
+                    lng: -77.04,
+                    zoom: 13
                 };
             });
 
