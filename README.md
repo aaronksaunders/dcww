@@ -142,3 +142,8 @@ You can find additional documentation here [https://github.com/angular-ui/ui-rou
         return ParseConfiguration.USING_PARSE;
 
     }
+
+
+## Ionic Video Series - Subscribe on YouTube Channel
+[![http://www.clearlyinnovative.com/wp-content/uploads/2015/07/blog-cover-post-2.jpg](http://www.clearlyinnovative.com/wp-content/uploads/2015/07/blog-cover-post-2.jpg)](https://www.youtube.com/channel/UCMCcqbJpyL3LAv3PJeYz2bg?sub_confirmation=1)
+
