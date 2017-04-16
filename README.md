@@ -2,7 +2,7 @@
 
 DC Web Women Code(Her) Ionic Framework Sample App
 ====
-##About This Project
+## About This Project
 This is a simple application that was used to demonstrate the Ionic Framework
  - based off of the tabs sample template
  - uses ngCordova - [http://ngcordova.com/docs/](http://ngcordova.com/docs/)
@@ -18,19 +18,19 @@ The application allows the user to take pictures and save them to a in memory ca
 ![alt tag](doc/Screenshot%202014-09-13%2019.30.52.png)
 ![alt tag](doc/Screenshot%202014-09-13%2019.30.57.png)
 
-##More Images
+## More Images
 - [Enter Caption for Photo](https://github.com/aaronksaunders/dcww/blob/master/doc/Screen%20Shot%202014-09-13%20at%208.14.52%20PM.png)
 - [List View with Updated Entry](https://github.com/aaronksaunders/dcww/blob/master/doc/Screen%20Shot%202014-09-13%20at%208.14.24%20PM.png)
 - [Detail View Showing Photo and Information](https://github.com/aaronksaunders/dcww/blob/master/doc/Screen%20Shot%202014-09-13%20at%208.14.15%20PM.png)
 
 
-##Installation Steps for Running Project
+## Installation Steps for Running Project
 
 - It is assumed that you have and Android or IOS development environment installed
 - It is assumed you have node and npm installed 
   - [node-and-npm-in-30-seconds.sh](https://gist.github.com/isaacs/579814) 
 
-####High Level Installation Steps 
+#### High Level Installation Steps 
 
 - Install Ionic [http://ionicframework.com/getting-started/](http://ionicframework.com/getting-started/)
   - this process will download phonegap/cordova for you
@@ -50,7 +50,7 @@ The application allows the user to take pictures and save them to a in memory ca
   - enter command `ionic platform android`
   - enter command `ionic platform ios`
 
-##Parse Integration as Requested in the workshop
+## Parse Integration as Requested in the workshop
 The application demonstrates the use of Angular Services for persistence. There is a Parse implementation, `ParseImageService` and a memory based implementation, `ImageService`. The application currently is configured to use `ParseImageService`; this
 requires that you set your own parse credentials in the application.
  
@@ -63,7 +63,7 @@ When you browse your data, it should look like this.
 For additional information, see the Parse.com website for [Getting Started](https://www.parse.com/apps/quickstart#parse_data/web/existing)
  
  
-###ImageModel to Support both Interfaces
+### ImageModel to Support both Interfaces
  The data object that is returned from a parse query is not a simple javascript hash so there was a need to create a model object
  that would convert the objects returned from the default `ImageService` into some object that has the same interface as a Parse.com
  object so we would not need two UI implementations.
@@ -115,7 +115,7 @@ For additional information, see the Parse.com website for [Getting Started](http
 
      };
  
-####Parse Integration and Basic Local Storage 
+#### Parse Integration and Basic Local Storage 
  Open the `app.js` file and modify the code below to use your credentials. If you set any of the credentials to an empty string,
  the application will still work, but it will utilize the default image service and not use parse
  
@@ -126,7 +126,7 @@ For additional information, see the Parse.com website for [Getting Started](http
      })
 for  
 
-####Ui-Router and resolve for Parse Integration
+#### Ui-Router and resolve for Parse Integration
 This funny looking code for initializing Parse.com that is in `app.js` is the resolve functionality of the ui-router.
 You can find additional documentation here [https://github.com/angular-ui/ui-router/wiki#resolve](https://github.com/angular-ui/ui-router/wiki#resolve)
 
